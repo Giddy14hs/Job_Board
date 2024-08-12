@@ -1,0 +1,32 @@
+/* login.css */
+
+/* Ensure the body and html take up the full height */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Center the login page container */
+.loginPage {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* Optional: Set a background color */
+}
+
+/* Style the Ant Design Card */
+.card {
+  width: 100%;
+  max-width: 400px; /* Set a max-width for the card */
+}
+
+/* Optional: Add some spacing around the card */
+.ant-card-body {
+  padding: 20px;
+}
+
+/* Optional: Style the form elements */
+.ant-form-item {
+  margin-bottom: 16px;
+}
