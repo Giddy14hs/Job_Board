@@ -26,7 +26,7 @@ const getAllJobListings = async (req, res) => {
 const getJobListingById = async (req, res) => {
   try {
     const jobListing = await JobListing.findById(req.params.id).populate('employerId');
-    if (!jobListing) return res.status(404).json({ message: 'Job Listing not found' });
+    if (!jobListing) return res.status(404).json({ message: 'Job not found' });
     res.status(200).json(jobListing);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -37,7 +37,7 @@ const getJobListingById = async (req, res) => {
 const updateJobListing = async (req, res) => {
   try {
     const jobListing = await JobListing.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!jobListing) return res.status(404).json({ message: 'Job Listing not found' });
+    if (!jobListing) return res.status(404).json({ message: 'Job not found' });
     res.status(200).json(jobListing);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -48,8 +48,8 @@ const updateJobListing = async (req, res) => {
 const deleteJobListing = async (req, res) => {
   try {
     const jobListing = await JobListing.findByIdAndDelete(req.params.id);
-    if (!jobListing) return res.status(404).json({ message: 'Job Listing not found' });
-    res.status(200).json({ message: 'Job Listing deleted successfully' });
+    if (!jobListing) return res.status(404).json({ message: 'Job not found' });
+    res.status(200).json({ message: 'Job deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

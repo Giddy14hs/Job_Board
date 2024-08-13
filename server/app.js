@@ -2,48 +2,55 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
-// Import routes
 import employerRoutes from './routes/employer.js';
 import jobSeekerRoutes from './routes/jobSeeker.js';
 import jobListingRoutes from './routes/jobListing.js';
 import applicationRoutes from './routes/jobApplication.js';
-
-// Load environment variables from .env file
-dotenv.config();
+import alertRoutes from "./routes/alerts.js"
+import connection from './config/db.js';
+import mysql from "mysql2/promise"
+import dotenv from "dotenv"
 
 const app = express();
 
+dotenv.config();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
-// Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error); // Log the full error object
-    process.exit(1);
-  }
-};
-
-connectDB();
+mongoose.set('debug', true);
 
 // Use routes
 app.use('/api/employers', employerRoutes);
 app.use('/api/job-seekers', jobSeekerRoutes);
 app.use('/api/job-listings', jobListingRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!' });
+});
+
+async function initializeDatabase() {
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
+    });
+    console.log('Connected to the database.');
+    return connection;
+  } catch (err) {
+    console.error('Error connecting to the database:', err.message);
+    throw err;
+  }
+}
+
+initializeDatabase().then(() => {
+  // Start your server or other application logic here
 });
 
 // Start server
