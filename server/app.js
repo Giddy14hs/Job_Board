@@ -7,6 +7,7 @@ import jobSeekerRoutes from './routes/jobSeeker.js';
 import jobListingRoutes from './routes/jobListing.js';
 import applicationRoutes from './routes/jobApplication.js';
 import alertRoutes from "./routes/alerts.js"
+import userRoutes from './routes/users.js';
 import connection from './config/db.js';
 import mysql from "mysql2/promise"
 import dotenv from "dotenv"
@@ -21,11 +22,12 @@ app.use(cors());
 mongoose.set('debug', true);
 
 // Use routes
-app.use('/api/employers', employerRoutes);
-app.use('/api/job-seekers', jobSeekerRoutes);
-app.use('/api/job-listings', jobListingRoutes);
-app.use('/api/applications', applicationRoutes);
-app.use('/api/alerts', alertRoutes);
+app.use('/employers', employerRoutes);
+app.use('/candidate', jobSeekerRoutes);
+app.use('job-listings', jobListingRoutes);
+app.use('/applications', applicationRoutes);
+app.use('/alerts', alertRoutes);
+app.use('/user', userRoutes)
 
 // Error handling middleware
 app.use((err, req, res, next) => {

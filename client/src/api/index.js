@@ -15,8 +15,8 @@ api.interceptors.request.use((req) => {
 
 });
 
-export const login = async(formValues) => {
+export const login = (formValues) => {
   return api.post("/user/login", formValues)};
 
-export const signup = async(formValues) => {
+export const signup = (formValues) => {
   return api.post("/user/signup", formValues)};

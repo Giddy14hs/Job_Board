@@ -1,22 +1,15 @@
 // routes/jobSeekerRoutes.js
 import express from 'express';
-import jobSeekerController from '../controllers/jobSeeker.js';
+import {getCandidateProfile, updateCandidateProfile} from '../controllers/jobSeeker.js';
+import Authentication from "../middleware/Authentication.js"
 
 const router = express.Router();
 
-// Create a new job seeker
-router.post('/', jobSeekerController.createJobSeeker);
-
 // Get all job seekers
-router.get('/', jobSeekerController.getAllJobSeekers);
+router.get('/profile', Authentication, getCandidateProfile);
 
-// Get a job seeker by ID
-router.get('/:id', jobSeekerController.getJobSeekerById);
-
-// Update a job seeker by ID
-router.put('/:id', jobSeekerController.updateJobSeeker);
-
-// Delete a job seeker by ID
-router.delete('/:id', jobSeekerController.deleteJobSeeker);
+//Update a job seeker by ID
+router.put('/updateProfile', Authentication,
+updateCandidateProfile);;
 
 export default router;

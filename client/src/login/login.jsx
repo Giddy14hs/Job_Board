@@ -10,25 +10,36 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
+  const [form] = Form.useForm();
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState('');
 
-  const onSubmit = (values) => {
+  const onSubmit = (formValues) => {
+
+    const values = form.getFieldsValue();
+
     if (!isLogin && values.password !== values.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
-    try {
+    try{
       if (isLogin) {
-        dispatch(login(values, navigate));
+         dispatch(login(values, navigate));
       } else {
         dispatch(signup(values, navigate));
       }
+      if (values.isEmployer) {
+        navigate("/employerBoard"); // Redirect to employer dashboard
+      } else {
+        navigate("/candidateBoard"); // Redirect to candidate dashboard
+      }
+    
       setError('');
     } catch (error) {
-      setError(error.response?.data?.message || 'An error occurred');
+      setError(error.response.data.message || 'An error occurred');
     }
+    form.resetFields();
+    setError('');
   };
 
   const switchMode = () => {
@@ -47,10 +58,10 @@ const Login = () => {
 
         {/* Username Field */}
         <Form.Item
-          name="username"
+          name="name"
           rules={[{ required: true, message: 'Please input your Username!' }]}
         >
-          <Input prefix={<UserOutlined />} placeholder="Username" />
+          <Input prefix={<UserOutlined />} placeholder="Name" />
         </Form.Item>
 
         {/* Email Field (only for signup) */}
@@ -108,6 +119,8 @@ const Login = () => {
           {isLogin ? 'Sign Up' : 'Login'}
         </Button>
       </div>
+      {/* Display Error Message */}
+      {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
     </div>
   );
 };

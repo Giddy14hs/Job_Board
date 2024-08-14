@@ -1,17 +1,32 @@
-import mongoose from 'mongoose';
+// models/candidate.js
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
-const Schema = mongoose.Schema;
-
-const jobSeekerSchema = new Schema({
-  resume: { type: String },  // URL or file reference
-  skills: [{ type: String }],
-  experience: [{ type: String }],
-  education: [{ type: String }],
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+const Candidate = sequelize.define('Candidate', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Users',
+      key: 'id',
+    },
+  },
+  bio: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  skills: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  // Add other fields as per your table
+}, {
+  timestamps: true,
 });
 
-const JobSeeker = mongoose.model('JobSeeker', jobSeekerSchema);
-
-export default JobSeeker;
+export default Candidate;
